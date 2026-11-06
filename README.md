@@ -89,21 +89,69 @@ Leva as alterações da branch de trabalho atual para `develop` ou `main` por me
 
 ### Instalando os Comandos
 
-**Em um projeto específico** (versionados junto com o projeto):
+O Claude Code procura comandos em dois lugares:
+
+| Local | Pasta | Disponível em |
+|-------|-------|---------------|
+| Usuário (global) | `~/.claude/commands/` (Windows: `%USERPROFILE%\.claude\commands\`) | **Todos os projetos** da máquina |
+| Projeto | `<projeto>/.claude/commands/` | Apenas naquele projeto |
+
+#### Opção 1 (recomendada) — Global, em todos os projetos
+
+Instalando na pasta do usuário, os comandos ficam disponíveis em **qualquer projeto** aberto no Claude Code, sem precisar criar `.claude/` em cada um.
+
+Primeiro, clone este repositório em um local fixo:
+
+```bash
+git clone https://github.com/Euclides-Marques/ai-prompts.git ~/ai-prompts
+```
+
+**Com link simbólico** — a pasta global aponta para o repositório, então basta um `git pull` para atualizar os comandos:
+
+- **Linux / macOS / Git Bash:**
+
+  ```bash
+  mkdir -p ~/.claude
+  # se já existir uma pasta ~/.claude/commands, faça backup dos seus comandos antes
+  ln -s ~/ai-prompts/commands ~/.claude/commands
+  ```
+
+- **Windows (PowerShell):**
+
+  ```powershell
+  New-Item -ItemType Directory -Force "$env:USERPROFILE\.claude" | Out-Null
+  # se já existir a pasta commands, faça backup dos seus comandos antes
+  New-Item -ItemType Junction -Path "$env:USERPROFILE\.claude\commands" -Target "$env:USERPROFILE\ai-prompts\commands"
+  ```
+
+  > O `Junction` funciona sem privilégios de administrador nem modo de desenvolvedor.
+
+**Copiando os arquivos** — mais simples, mas é preciso copiar de novo a cada atualização:
+
+- **Linux / macOS / Git Bash:**
+
+  ```bash
+  mkdir -p ~/.claude/commands
+  cp ~/ai-prompts/commands/*.md ~/.claude/commands/
+  ```
+
+- **Windows (PowerShell):**
+
+  ```powershell
+  New-Item -ItemType Directory -Force "$env:USERPROFILE\.claude\commands" | Out-Null
+  Copy-Item "$env:USERPROFILE\ai-prompts\commands\*.md" "$env:USERPROFILE\.claude\commands\"
+  ```
+
+Para conferir, abra o Claude Code em qualquer projeto e digite `/` — `/commit`, `/codereview` e `/merge` devem aparecer na lista.
+
+#### Opção 2 — Apenas em um projeto
+
+Use quando quiser versionar os comandos junto com o projeto (ex: para toda a equipe usar a mesma versão):
 
 ```bash
 mkdir -p /caminho/do/projeto/.claude/commands
 cp commands/*.md /caminho/do/projeto/.claude/commands/
 ```
-
-**Para todos os projetos** (comandos do usuário):
-
-```bash
-mkdir -p ~/.claude/commands
-cp commands/*.md ~/.claude/commands/
-```
-
-No Windows, a pasta do usuário é `%USERPROFILE%\.claude\commands\`.
 
 ### Fluxo Recomendado
 
@@ -150,7 +198,8 @@ Consulte a [documentação de configurações](https://docs.anthropic.com/en/doc
 
 | Problema | Solução |
 |----------|---------|
-| Claude não encontra o comando | Verifique se os arquivos estão em `.claude/commands/` (projeto) ou `~/.claude/commands/` (usuário) |
+| Claude não encontra o comando | Verifique se os arquivos `.md` estão diretamente em `~/.claude/commands/` (global) ou `.claude/commands/` (projeto) e reinicie o Claude Code |
+| Link simbólico não funciona no Windows | Use `New-Item -ItemType Junction` em vez de `SymbolicLink`, ou copie os arquivos |
 | `/merge` falha na autenticação | Execute `gh auth login` e confirme com `gh auth status` |
 | `/merge` bloqueado por proteção de branch | Obtenha as aprovações/checks exigidos e execute o comando novamente |
 | Commit com menção ao Claude | Desative a atribuição no `settings.json` (veja acima) |
