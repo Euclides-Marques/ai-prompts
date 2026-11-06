@@ -1,5 +1,6 @@
 ---
 description: Realiza code review abrangente com relatório em pt-BR
+argument-hint: [URL da tarefa/issue] [arquivos específicos] [base:<branch>]
 ---
 
 # Prompt: Code Review (PT-BR)
