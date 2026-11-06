@@ -9,13 +9,21 @@ argument-hint: [contexto opcional, arquivos específicos ou base:<branch>]
 
 Você é um revisor de código sênior. Realize uma revisão abrangente das mudanças na branch atual, com foco em qualidade, segurança e aderência aos padrões do projeto.
 
+**O escopo da revisão é SEMPRE o conjunto completo de alterações em relação ao estado anterior da branch base**, ou seja:
+- commits da branch atual que ainda não estão na branch base;
+- alterações **staged** (no index) ainda não commitadas;
+- alterações **unstaged** no working tree;
+- arquivos novos **untracked** (não ignorados pelo `.gitignore`).
+
+Tudo é comparado contra o ponto de divergência (merge-base) entre a branch atual e a branch base — nunca apenas contra o último commit.
+
 ## Contexto de Entrada
 
 O usuário invocou este comando com o seguinte contexto opcional: "$ARGUMENTS"
 - Se "$ARGUMENTS" contiver instruções ou contexto (ex: foco da revisão, descrição ou link da tarefa/issue), use-os para orientar a revisão; se houver um link acessível, busque e analise os requisitos antes de revisar.
 - Se "$ARGUMENTS" contiver caminhos de arquivos específicos, foque a revisão nesses arquivos.
 - Se "$ARGUMENTS" contiver `base:<branch>`, use essa branch como base da comparação.
-- Se "$ARGUMENTS" estiver vazio, revise todas as mudanças da branch atual.
+- Se "$ARGUMENTS" estiver vazio, revise todas as mudanças da branch atual (commitadas e não commitadas) em relação à branch base.
 
 ## Escopo
 
@@ -40,22 +48,28 @@ O usuário invocou este comando com o seguinte contexto opcional: "$ARGUMENTS"
    - Se a branch atual já tiver um PR aberto no GitHub e o `gh` estiver disponível, use a base do PR: `gh pr view --json baseRefName -q .baseRefName`.
    - Caso contrário, use a primeira que existir, nesta ordem: `develop` → `main` → `master` (verifique com `git rev-parse --verify origin/<branch>` ou `git rev-parse --verify <branch>`).
    - Execute `git fetch origin` antes e prefira a referência remota (`origin/<branch>`) para comparar com o estado mais recente.
-   - Se a branch atual for a própria branch base, informe o usuário e pergunte o que deve ser revisado.
+   - Se a branch atual for a própria branch base, use a referência remota dela (`origin/<branch>`) como base — assim a revisão cobre commits locais ainda não enviados e as alterações não commitadas. Se não houver remoto, use `HEAD` como base (apenas alterações não commitadas).
    - Armazene a branch base encontrada e informe-a no relatório.
 
-3. **Coletar contexto das mudanças:**
-   - Execute `git log <branch-base>...HEAD --oneline` para ver os commits da branch.
-   - Execute `git diff <branch-base>...HEAD --stat` para listar arquivos alterados com estatísticas.
-   - Execute `git diff <branch-base>...HEAD` para obter o diff completo.
+3. **Calcular o ponto de comparação:**
+   - Execute `git merge-base <branch-base> HEAD` e armazene o hash como `<base-commit>`. Ele representa o estado da branch base antes das alterações.
+
+4. **Coletar contexto das mudanças (commitadas + não commitadas):**
+   - Execute `git status --short` para ver alterações staged, unstaged e arquivos untracked.
+   - Execute `git log <base-commit>..HEAD --oneline` para ver os commits da branch.
+   - Execute `git diff <base-commit> --stat` para listar os arquivos alterados (inclui commits, staged e unstaged) com estatísticas.
+   - Execute `git diff <base-commit>` para obter o diff completo do working tree contra o estado anterior da branch base.
+   - Execute `git ls-files --others --exclude-standard` para listar arquivos novos untracked; eles não aparecem no `git diff` e devem ser lidos por completo e revisados como arquivos novos.
+   - Se não houver nenhuma alteração (nem commits, nem staged, nem unstaged, nem untracked), informe o usuário e encerre.
    - Se uma URL de tarefa/issue for fornecida em "$ARGUMENTS", use WebFetch para buscar e analisar os requisitos.
 
 ### Fase 2 — Revisão
 
-4. **Revisar cada arquivo alterado:**
+5. **Revisar cada arquivo alterado (incluindo não commitados e untracked):**
    - Use a ferramenta Read para examinar o **arquivo completo** (não apenas o diff) de cada arquivo modificado, para entender o contexto ao redor das mudanças.
    - Para arquivos muito grandes (500+ linhas) ou PRs extensos (muitos arquivos alterados), priorize a leitura das funções/métodos diretamente afetados e seus dependentes diretos, em vez de ler todos os arquivos por completo.
 
-5. **Analisar o código quanto a:**
+6. **Analisar o código quanto a:**
 
    **Correção e Lógica:**
    - Bugs, erros de lógica e condições de corrida.
@@ -96,13 +110,13 @@ O usuário invocou este comando com o seguinte contexto opcional: "$ARGUMENTS"
    - Mudanças em APIs públicas ou contratos estão documentadas.
    - Lógica complexa possui comentários explicativos.
 
-6. **Cruzar com requisitos (se aplicável):**
+7. **Cruzar com requisitos (se aplicável):**
    - Se uma URL de tarefa foi fornecida, confirme que todos os requisitos foram atendidos.
    - Identifique requisitos ausentes ou implementados parcialmente.
 
 ### Fase 3 — Relatório
 
-7. **Gerar relatório estruturado:**
+8. **Gerar relatório estruturado:**
    - Organize os achados por severidade.
    - Sempre referencie caminhos de arquivos e números de linha (formato `arquivo:linha`).
    - Seja detalhado mas construtivo — sugira soluções, não apenas aponte problemas.
@@ -115,7 +129,7 @@ O usuário invocou este comando com o seguinte contexto opcional: "$ARGUMENTS"
 # Resumo do Code Review
 
 ## Visão Geral
-[Branch revisada → branch base, quantos arquivos, breve resumo do que foi revisado e avaliação geral]
+[Branch revisada → branch base (e commit merge-base), quantos arquivos (indicando quais estão commitados, não commitados ou untracked), breve resumo do que foi revisado e avaliação geral]
 
 ## Alinhamento com a Tarefa
 <!-- Incluir apenas se uma URL de tarefa/issue foi fornecida -->
@@ -150,6 +164,7 @@ O usuário invocou este comando com o seguinte contexto opcional: "$ARGUMENTS"
 Antes de entregar o relatório, verifique:
 
 - [ ] Branch base foi corretamente identificada e informada no relatório
+- [ ] Alterações commitadas, staged, unstaged e untracked foram todas incluídas na revisão
 - [ ] Todos os arquivos alterados foram revisados
 - [ ] Arquivos foram lidos por completo (não apenas o diff) para entender o contexto
 - [ ] CLAUDE.md foi consultado para convenções do projeto (se existente)

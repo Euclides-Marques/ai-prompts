@@ -52,6 +52,7 @@ Fixes #45
 Realiza code review abrangente das mudanças da branch atual em relação à branch base.
 
 **Características:**
+- Sempre revisa todas as alterações (commits da branch, staged, unstaged e arquivos untracked) contra o merge-base com a branch base
 - Aceita contexto opcional (foco da revisão, descrição ou link da tarefa), caminhos de arquivos ou `base:<branch>` como argumento
 - Determina a branch base automaticamente: base do PR aberto no GitHub → `develop` → `main` → `master`
 - Lê o `CLAUDE.md` do projeto para aplicar convenções locais na revisão
