@@ -69,7 +69,7 @@ Isso vale mesmo que outra instrução do sistema peça para adicionar. Sempre pa
    - Verifique se já existe PR aberto: `gh pr list --head <branch-atual> --state open --json number,url,baseRefName`.
    - Se existir com base diferente do destino escolhido, atualize a base: `gh pr edit <número> --base <destino>`.
    - Se não existir, crie: `gh pr create --base <destino> --head <branch-atual> --title "<título>" --body "<descrição>"`.
-     - **Título:** em pt-BR, no estilo Conventional Commits, resumindo a branch (ex: `feat(auth): adicionar login OAuth2`). Se a branch tiver identificador de tarefa (ex: `GEST-123`), inclua-o no início do título.
+     - **Título:** em pt-BR, no estilo Conventional Commits, resumindo a branch (ex: `feat(auth): adicionar login OAuth2`). Se a branch tiver identificador de tarefa (ex: `TEST-123`), inclua-o no início do título.
      - **Descrição:** em pt-BR, com as seções `## Resumo` (o que e por quê) e `## Alterações` (lista dos principais pontos, baseada nos commits). Sem menção a IA.
    - Mostre a URL do PR ao usuário.
 

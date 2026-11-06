@@ -28,7 +28,7 @@ Analisa as mudanças no working tree e gera commits no padrão [Conventional Com
 
 **Características:**
 - Tipo em inglês (`feat`, `fix`, `docs`, etc.), descrição/corpo/rodapé em pt-BR
-- Se o nome da branch tiver um identificador de tarefa (ex: `feature/GEST-123-login`), adiciona `Refs: GEST-123` no rodapé
+- Se o nome da branch tiver um identificador de tarefa (ex: `feature/TEST-123-login`), adiciona `Refs: TEST-123` no rodapé
 - Agrupa mudanças atomicamente (nunca mistura alterações não relacionadas)
 - Usa `git add <arquivos-específicos>` (nunca `git add .`)
 - Respeita regras de commit definidas no `CLAUDE.md`/`CONTRIBUTING.md` do projeto, se existirem
@@ -41,7 +41,7 @@ feat(auth): adicionar suporte a login OAuth2
 Implementa o fluxo de autenticação via Google e GitHub para facilitar
 o acesso de novos usuários.
 
-Refs: GEST-123
+Refs: TEST-123
 Fixes #45
 ```
 
@@ -109,7 +109,7 @@ No Windows, a pasta do usuário é `%USERPROFILE%\.claude\commands\`.
 
 ```bash
 # 1. Criar a branch de trabalho
-git checkout -b feature/GEST-123-login
+git checkout -b feature/TEST-123-login
 
 # 2. Iniciar o Claude Code na raiz do projeto
 claude
@@ -119,7 +119,7 @@ claude
 
 # 4. Revisar a branch
 /codereview
-/codereview https://seu-gerenciador.com/browse/GEST-123
+/codereview https://seu-gerenciador.com/browse/TEST-123
 /codereview base:main
 
 # 5. Integrar via PR no GitHub (pergunta develop ou main)

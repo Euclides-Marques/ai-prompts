@@ -36,7 +36,7 @@ O autor do commit é exclusivamente o usuário configurado no Git (`git config u
 
 1. **Analisar status:** Execute `git status` e `git diff` (e `git diff --staged`) para visualizar mudanças pendentes.
 2. **Obter nome da branch:** Execute `git branch --show-current`.
-   - Se o nome da branch contiver um identificador de tarefa (ex: `GEST-123`, `feature/PROJ-42-login`, `fix/#45`), use-o como referência no rodapé (veja "Regras do Rodapé").
+   - Se o nome da branch contiver um identificador de tarefa (ex: `TEST-123`, `feature/PROJ-42-login`, `fix/#45`), use-o como referência no rodapé (veja "Regras do Rodapé").
    - Se a branch for `main`, `master` ou `develop` (ou não contiver identificador), não adicione referência de tarefa.
 3. **Agrupamento atômico:** Identifique mudanças logicamente relacionadas.
    - Se existirem múltiplas mudanças não relacionadas e "$ARGUMENTS" não especificar o que commitar, pergunte ao usuário se deseja commitar todos os grupos (um commit por grupo) ou apenas um deles.
@@ -106,7 +106,7 @@ docs: atualizar instruções de instalação
 ### Regras do Rodapé
 
 - **Breaking Changes:** Deve começar com `BREAKING CHANGE:`.
-- **Tarefa da branch:** `Refs: <ID>` (ex: `Refs: GEST-123`), quando houver identificador na branch.
+- **Tarefa da branch:** `Refs: <ID>` (ex: `Refs: TEST-123`), quando houver identificador na branch.
 - **Issues:** `Fixes #123` / `Closes #123` quando a mudança encerra a issue.
 - **Proibido:** qualquer rodapé de autoria de IA (veja seção acima).
 
