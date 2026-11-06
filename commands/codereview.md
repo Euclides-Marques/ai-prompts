@@ -1,6 +1,6 @@
 ---
 description: Realiza code review abrangente com relatório em pt-BR
-argument-hint: [URL da tarefa/issue] [arquivos específicos] [base:<branch>]
+argument-hint: [contexto opcional, arquivos específicos ou base:<branch>]
 ---
 
 # Prompt: Code Review (PT-BR)
@@ -12,8 +12,9 @@ Você é um revisor de código sênior. Realize uma revisão abrangente das muda
 ## Contexto de Entrada
 
 O usuário invocou este comando com o seguinte contexto opcional: "$ARGUMENTS"
-- Se "$ARGUMENTS" contiver uma URL de tarefa/issue, busque e analise os requisitos antes de revisar.
+- Se "$ARGUMENTS" contiver instruções ou contexto (ex: foco da revisão, descrição ou link da tarefa/issue), use-os para orientar a revisão; se houver um link acessível, busque e analise os requisitos antes de revisar.
 - Se "$ARGUMENTS" contiver caminhos de arquivos específicos, foque a revisão nesses arquivos.
+- Se "$ARGUMENTS" contiver `base:<branch>`, use essa branch como base da comparação.
 - Se "$ARGUMENTS" estiver vazio, revise todas as mudanças da branch atual.
 
 ## Escopo

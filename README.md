@@ -52,7 +52,7 @@ Fixes #45
 Realiza code review abrangente das mudanças da branch atual em relação à branch base.
 
 **Características:**
-- Aceita URL de tarefa/issue, caminhos de arquivos ou `base:<branch>` como argumento
+- Aceita contexto opcional (foco da revisão, descrição ou link da tarefa), caminhos de arquivos ou `base:<branch>` como argumento
 - Determina a branch base automaticamente: base do PR aberto no GitHub → `develop` → `main` → `master`
 - Lê o `CLAUDE.md` do projeto para aplicar convenções locais na revisão
 - Revisa arquivos completos (não apenas o diff) para entender contexto
