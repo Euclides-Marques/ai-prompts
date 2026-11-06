@@ -45,7 +45,11 @@ O autor do commit é exclusivamente o usuário configurado no Git (`git config u
    - **PROIBIDO:** NÃO use `git add .` ou `git add -A` a menos que explicitamente solicitado em "$ARGUMENTS".
    - Nunca adicione arquivos sensíveis (`.env`, credenciais, chaves) — alerte o usuário caso existam na working tree.
 5. **Gerar e commitar:** Crie a mensagem no formato abaixo e execute o commit. Para mensagens com várias linhas, use heredoc ou múltiplos `-m`.
-6. **Não fazer push:** Este comando apenas cria commits locais. Faça push somente se o usuário pedir.
+6. **Fazer push (obrigatório):** Após criar todos os commits, envie-os para o remoto.
+   - Se a branch já tiver upstream (`git rev-parse --abbrev-ref --symbolic-full-name @{u}`), execute `git push`.
+   - Se não tiver, execute `git push -u origin <branch-atual>`.
+   - Se não houver remoto configurado, informe o usuário que os commits ficaram apenas locais.
+   - Se o push for rejeitado (branch remota à frente), **nunca** use `--force`. Informe o usuário e sugira `git pull --rebase` antes de tentar novamente.
 
 ## Formato da Mensagem de Commit (Estrito)
 
@@ -111,4 +115,6 @@ docs: atualizar instruções de instalação
 1. Verifique se as mudanças são atômicas.
 2. Recupere o nome da branch e extraia o identificador da tarefa, se houver.
 3. Redija a mensagem em `pt-BR`, sem qualquer menção a IA.
-4. Execute o commit e mostre ao usuário o resultado (`git log --oneline -n <quantidade de commits criados>`).
+4. Execute o commit.
+5. Faça o push para o remoto.
+6. Mostre ao usuário o resultado (`git log --oneline -n <quantidade de commits criados>`) e confirme o push.

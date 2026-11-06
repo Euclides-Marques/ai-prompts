@@ -14,7 +14,7 @@ Comandos personalizados (slash commands) para o [Claude Code](https://claude.ai/
 
 | Comando | Arquivo | Descrição |
 |---------|---------|-----------|
-| `/commit` | [`commit.md`](commands/commit.md) | Gera commits convencionais atômicos em pt-BR |
+| `/commit` | [`commit.md`](commands/commit.md) | Gera commits convencionais atômicos em pt-BR e faz push |
 | `/codereview` | [`codereview.md`](commands/codereview.md) | Realiza code review abrangente da branch atual com relatório em pt-BR |
 | `/merge` | [`merge.md`](commands/merge.md) | Abre o PR no GitHub, faz o merge em `develop` ou `main` e apaga a branch |
 
@@ -32,7 +32,7 @@ Analisa as mudanças no working tree e gera commits no padrão [Conventional Com
 - Agrupa mudanças atomicamente (nunca mistura alterações não relacionadas)
 - Usa `git add <arquivos-específicos>` (nunca `git add .`)
 - Respeita regras de commit definidas no `CLAUDE.md`/`CONTRIBUTING.md` do projeto, se existirem
-- Apenas commita localmente — não faz push
+- Faz push automaticamente após o commit (configura o upstream se necessário; nunca usa `--force`)
 
 **Exemplo de saída:**
 ```
