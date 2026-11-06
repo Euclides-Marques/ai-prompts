@@ -120,7 +120,9 @@ Abra uma **nova sessão** do Claude Code em qualquer projeto e digite `/` — `/
 
 #### Atualizando os comandos
 
-Quando houver novas versões dos comandos, atualize o repositório e copie novamente:
+Quando houver novas versões dos comandos, atualize o repositório e copie novamente.
+
+> Os comandos abaixo assumem que o repositório foi clonado no local do passo de instalação (`$env:USERPROFILE\ai-prompts` ou `~/ai-prompts`). Se você clonou em outra pasta, substitua o caminho pelo local real do seu clone — caso contrário o `git -C` falha com `cannot change to ... No such file or directory`.
 
 ```powershell
 # Windows (PowerShell)
