@@ -1,0 +1,14 @@
+# Arquivo criado no Windows por redirecionamento acidental para "nul"
+nul
+
+# Configurações locais do Claude Code (pessoais, não versionar)
+.claude/settings.local.json
+
+# Arquivos de sistema operacional
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editores
+.vscode/
+.idea/
